@@ -20,6 +20,14 @@ function handleSubmit(event){
 
     const query = formInput.value.trim();
 
+    if (!query) {
+        iziToast.warning({
+            message: "Input cannot be empty!",
+            position: "topRight"
+        });
+        return;
+    }
+
     formInput.value = "";
     
     clearGallery();
@@ -37,7 +45,11 @@ function handleSubmit(event){
             createGallery(res.hits)
         })
         .catch(error => {
-            console.log("Error", error)
+            console.log("Error", error);
+            iziToast.error({
+            message: "Something went wrong. Please try again later.",
+            position: "topRight",
+        });
         })
         .finally(() => {
             hideLoader();
