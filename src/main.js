@@ -1,8 +1,6 @@
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
-import axios from "axios";
-
 import { getImagesByQuery } from "./js/pixabay-api"
 
 import {
@@ -21,18 +19,27 @@ function handleSubmit(event){
     event.preventDefault();
 
     const query = formInput.value.trim();
-    
-    if (!query) {
-        iziToast.warning({
-            title: 'Hey',
-            message: 'Sorry, there are no images matching your search query. Please try again!',
-            position: 'topRight'
-        });
-        return;
-    }
 
+    formInput.value = "";
+    
     clearGallery();
     showLoader();
+    
+    getImagesByQuery(query)
+        .then(res => {
+            if (res.hits.length === 0) {
+                iziToast.error({
+                message: 'Sorry, there are no images matching your search query. Please try again!',
+                position: 'topRight'
+                });
+                return;
+            }
+            createGallery(res.hits)
+        })
+        .catch(error => {
+            console.log("Error", error)
+        })
+        .finally(() => {
+            hideLoader();
+        })
 }
-
-

@@ -11,15 +11,33 @@ const lightBox = new SimpleLightbox('.gallery a', {
 })
 
 export function createGallery(images) {
-    const markup = images.map(({ previewURL, tags, largeImageURL }) => `
+    const markup = images.map(({ webformatURL, tags, largeImageURL, likes, views, comments, downloads}) => `
         <li class="gallery-item">
             <a class="gallery-link" href="${largeImageURL}">
                 <img
                     class="gallery-image"
-                    src="${previewURL}"
+                    src="${webformatURL}"
                     alt="${tags}"
                 />
             </a>
+            <ul class="image-details">
+                <li class="image-item">
+                    <p class="imageText">Likes</p>
+                    <p class="imageText-item">${likes}</p>
+                </li>
+                <li class="image-item">
+                    <p class="imageText">Views</p>
+                    <p class="imageText-item">${views}</p>
+                </li>
+                <li class="image-item">
+                    <p class="imageText">Comments</p>
+                    <p class="imageText-item">${comments}</p>
+                </li>
+                <li class="image-item">
+                    <p class="imageText">Downloads</p>
+                    <p class="imageText-item">${downloads}</p>
+                </li>
+            </ul>
         </li>
     `).join("");
 
@@ -28,15 +46,14 @@ export function createGallery(images) {
     lightBox.refresh();
 };
 
-
 export function clearGallery() { 
     container.innerHTML = '';
 };
 
-export function showLoader() { 
-    loader.classList.remove("hidden")
+export function showLoader() {
+    loader.hidden = false;
 };
 
 export function hideLoader() { 
-    loader.classList.add("hidden")
+    loader.hidden = true;
 };
